@@ -31,7 +31,7 @@ class Validation {
     if (req.body.firstname.trim().length < 2 || req.body.firstname.trim().length > 20) {
       return res.status(400).send({
         status: 400,
-        error: "User's first name should not be between 2 and 20",
+        error: "User's first name should be between 2 and 20",
       });
     }
     if (/\`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:|\s/.test(req.body.firstname)) {
@@ -40,7 +40,6 @@ class Validation {
         error: "User's first name should not contain special characters",
       });
     }
-
     // LAST-NAME
     if (!req.body.lastname) {
       return res.status(400).send({
@@ -63,7 +62,7 @@ class Validation {
     if (req.body.lastname.trim().length < 2 || req.body.lastname.trim().length > 20) {
       return res.status(400).send({
         status: 400,
-        error: "User's last name should not be between 2 and 20",
+        error: "User's last name should be between 2 and 20",
       });
     }
     if (/\`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:|\s/.test(req.body.lastname)) {
@@ -88,6 +87,43 @@ class Validation {
     }
 
     // PASSWORD
+    if (!req.body.password) {
+      return res.status(400).send({
+        status: 400,
+        error: "User's password is required",
+      });
+    }
+    if (req.body.password.trim().length < 6) {
+      return res.status(400).send({
+        status: 400,
+        error: "User's password should be up to 6 characters",
+      });
+    }
+    next();
+  }
+
+  /**
+     * validates signin body
+     * @param {*} req
+     * @param {*} res
+     * @param {*} next
+     */
+  static signinValidation(req, res, next) {
+    // Email
+    if (!req.body.email) {
+      return res.status(400).send({
+        status: 400,
+        error: "User's email is required",
+      });
+    }
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email) === false) {
+      return res.status(400).send({
+        status: 400,
+        error: "User's email address is incorrect",
+      });
+    }
+
+    // Password
     if (!req.body.password) {
       return res.status(400).send({
         status: 400,

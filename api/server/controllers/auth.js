@@ -22,14 +22,17 @@ class authController {
       const token = Authenticate.generateToken({ id: data.id, email: data.email });
       res.status(201).json({
         status: 200,
-        token,
-        data,
+        data: {
+          ...data,
+          token,
+        },
       });
       return;
     } catch (error) {
       if (error.routine === '_bt_check_unique') {
         res.status(409).json({
-          message: 'User with email already exist',
+          status: 409,
+          error: 'User with email already exist',
         });
         return;
       }
@@ -38,6 +41,40 @@ class authController {
         error: error.message,
       });
     }
+  }
+
+  /**
+     * @description Login user
+     * @param {object} req request object
+     * @param {object} res response object
+     * @returns {object} JON response
+     */
+  static async signin(req, res) {
+    const { email } = req.body;
+    const findUser = await users.findByEmail(email);
+    const result = findUser.rows[0];
+    if (!result) {
+      return res.status(401).json({
+        status: 401,
+        error: 'Invalid email or password',
+      });
+    }
+    const password = Authenticate.comparePassword(req.body.password, result.password);
+    const token = Authenticate.generateToken({ id: result.id, email: result.email });
+    if (password) {
+      delete result.password;
+      return res.status(200).json({
+        status: 200,
+        data: {
+          ...result,
+          token,
+        },
+      });
+    }
+    return res.status(401).json({
+      status: 401,
+      error: 'Login credentials is Incorrect',
+    });
   }
 }
 
