@@ -66,4 +66,24 @@ const User = [
     email,
   },
 ];
-export default { User };
+const InvalidAccess = [
+  {
+    // Email already exists
+    firstname,
+    lastname,
+    email: 'afeefie@gmail.com',
+    password,
+  },
+  {
+    // Incorrect Credentials
+    email: 'bolas@gmail.com',
+    password: 'cmofdqwarddviop',
+  },
+  {
+    // Invalid mail or password
+    email: 'boals@gmail.com',
+    password: 'cmaofdqwrddviop',
+  },
+];
+
+export default { User, InvalidAccess };

@@ -30,7 +30,7 @@ class Authentication {
   /**
    * @description Compare password
    */
-  static comparePassword(hashPassword, password) {
+  static comparePassword(password, hashPassword) {
     return bcrypt.compareSync(password, hashPassword);
   }
 }
