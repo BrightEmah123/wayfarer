@@ -5,6 +5,9 @@ const firstname = faker.name.firstName();
 const lastname = faker.name.lastName();
 const email = faker.internet.email();
 const password = faker.internet.password();
+const origin = faker.address.state();
+const destination = faker.address.state();
+const fare = faker.finance.amount();
 
 const User = [
   {
@@ -71,19 +74,129 @@ const InvalidAccess = [
     // Email already exists
     firstname,
     lastname,
-    email: 'afeefie@gmail.com',
+    email: 'jd@generic.com',
     password,
   },
   {
     // Incorrect Credentials
-    email: 'bolas@gmail.com',
-    password: 'cmofdqwarddviop',
+    email: 'jada@generic.com',
+    password: 'AWERNfghb865v5zS3xIf6Rjz4D',
   },
   {
     // Invalid mail or password
-    email: 'boals@gmail.com',
-    password: 'cmaofdqwrddviop',
+    email: 'jada@generic.com',
+    password: 'AWERgdhfjio0Nfghb865v5zS3xIf6Rjz4D',
   },
 ];
 
-export default { User, InvalidAccess };
+const Trip = [
+  {
+    // Create Trip
+    email: 'admin@wayfarer.com',
+    origin,
+    destination,
+    tripDate: '11/2/1997',
+    fare,
+  },
+  {
+    // Mail not found
+    email,
+    origin,
+    destination,
+    tripDate: '11/2/1997',
+    fare,
+  },
+  {
+    // Mail not admin
+    email: 'jd@generic.com',
+    origin,
+    destination,
+    tripDate: '11/5/2003',
+    fare,
+  },
+  {
+    // No mail
+    origin,
+    destination,
+    tripDate: '11/5/2003',
+    fare,
+  },
+  {
+    // Incoreect admin mail
+    email: 'admin1wayfarer.com',
+    origin,
+    destination,
+    tripDate: '11/5/2003',
+    fare,
+  },
+  {
+    // No origin
+    email: 'admin@wayfarer.com',
+    destination,
+    tripDate: '11/5/2003',
+    fare,
+  },
+  {
+    // Origin must be 2 to 50 characters
+    email: 'admin@wayfarer.com',
+    origin: 'a',
+    destination,
+    tripDate: '11/5/2003',
+    fare,
+  },
+  {
+    // No destination
+    email: 'admin@wayfarer.com',
+    origin,
+    tripDate: '11/5/2003',
+    fare,
+  },
+  {
+    // Destination must be 2 to 50 characters
+    email: 'admin@wayfarer.com',
+    origin,
+    destination: 'b',
+    tripDate: '11/5/2003',
+    fare,
+  },
+  {
+    // No trip-Date
+    email: 'admin@wayfarer.com',
+    origin,
+    destination,
+    fare,
+  },
+  {
+    // Invalid Trip-Date format
+    email: 'admin@wayfarer.com',
+    origin,
+    destination,
+    tripDate: '11th August 2003',
+    fare,
+  },
+  {
+    // No fare
+    email: 'admin@wayfarer.com',
+    origin,
+    destination,
+    tripDate: '11/08/2003',
+  },
+  {
+    // Fare must be a number
+    email: 'admin@wayfarer.com',
+    origin,
+    destination,
+    tripDate: '11/08/2003',
+    fare: 'alo',
+  },
+];
+const adminSignin = [
+  {
+    email: 'admin@wayfarer.com',
+    password: 'RyE74wmzS3xIf6Rjz4D',
+  },
+];
+
+export default {
+  User, InvalidAccess, Trip, adminSignin,
+};

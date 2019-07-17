@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 import { Client } from 'pg';
 import debug from 'debug';
-import users from './migration';
+import createTables from './migration';
 
 const Debug = debug('dev');
 
@@ -13,8 +13,9 @@ const client = new Client({
   host: process.env.DB_HOST || 'localhost',
   ssl: process.env.SSL || false,
 });
-client.query(users, () => {
-  Debug('Table Created');
+client.query(createTables, (error) => {
+  Debug('Tables Created');
+  Debug('error: ', error);
   client.end();
 });
 
