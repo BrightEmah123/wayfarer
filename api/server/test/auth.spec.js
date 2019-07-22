@@ -20,7 +20,7 @@ describe('Registration test', () => {
           expect(res).to.have.status(201);
           expect(res.body).to.have.property('status');
           expect(res.body.data).to.have.property('token');
-          expect(res.body.data).to.have.property('id');
+          expect(res.body.data).to.have.property('userid');
           expect(res.body.data).to.have.property('firstname');
           expect(res.body.data).to.have.property('lastname');
           expect(res.body.data).to.have.property('email');
@@ -117,7 +117,7 @@ describe('Login Test', () => {
           expect(res).to.have.status(200);
           expect(res.body).to.have.property('status');
           expect(res.body.data).to.have.property('token');
-          expect(res.body.data).to.have.property('id');
+          expect(res.body.data).to.have.property('userid');
           expect(res.body.data).to.have.property('firstname');
           expect(res.body.data).to.have.property('lastname');
           expect(res.body.data).to.have.property('email');
@@ -126,7 +126,7 @@ describe('Login Test', () => {
     });
     it('Should return a 400 status if the email was not entered', (done) => {
       chai.request(app)
-        .post(`${authURI}/signup`)
+        .post(`${authURI}/signin`)
         .send(dataFeed.User[8])
         .end((err, res) => {
           expect(res).to.have.status(400);
@@ -137,7 +137,7 @@ describe('Login Test', () => {
     });
     it('Should return a 400 status if the password was not entered', (done) => {
       chai.request(app)
-        .post(`${authURI}/signup`)
+        .post(`${authURI}/signin`)
         .send(dataFeed.User[9])
         .end((err, res) => {
           expect(res).to.have.status(400);
@@ -149,7 +149,7 @@ describe('Login Test', () => {
     it('Should return a 401 status if the login credentials is incorrect', (done) => {
       chai.request(app)
         .post(`${authURI}/signin`)
-        .send(dataFeed.InvalidAccess[0])
+        .send(dataFeed.InvalidAccess[1])
         .end((err, res) => {
           expect(res).to.have.status(401);
           expect(res.body).to.be.a('object');
@@ -160,7 +160,7 @@ describe('Login Test', () => {
     it('Should return a 401 status if both email and/or password is invalid', (done) => {
       chai.request(app)
         .post(`${authURI}/signin`)
-        .send(dataFeed.InvalidAccess[1])
+        .send(dataFeed.InvalidAccess[2])
         .end((err, res) => {
           expect(res).to.have.status(401);
           expect(res.body).to.be.a('object');

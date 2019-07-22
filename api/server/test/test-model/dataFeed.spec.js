@@ -68,6 +68,11 @@ const User = [
     // Omitted-Password Login User
     email,
   },
+  {
+    // Seeded User Login
+    email: 'jd@generic.com',
+    password: 'AWERNfghb865v5zS3xIf6Rjz4D',
+  },
 ];
 const InvalidAccess = [
   {
@@ -78,9 +83,9 @@ const InvalidAccess = [
     password,
   },
   {
-    // Incorrect Credentials
-    email: 'jada@generic.com',
-    password: 'AWERNfghb865v5zS3xIf6Rjz4D',
+    //  Incorrect Credentials
+    email: 'jd@generic.com',
+    password,
   },
   {
     // Invalid mail or password
@@ -92,23 +97,23 @@ const InvalidAccess = [
 const Trip = [
   {
     // Create Trip
-    email: 'admin@wayfarer.com',
+    userid: 1,
     origin,
     destination,
     tripDate: '11/2/1997',
     fare,
   },
   {
-    // Mail not found
-    email,
+    // User not found
+    userid: 1234567890,
     origin,
     destination,
     tripDate: '11/2/1997',
     fare,
   },
   {
-    // Mail not admin
-    email: 'jd@generic.com',
+    // User is not admin
+    userid: 2,
     origin,
     destination,
     tripDate: '11/5/2003',
@@ -122,8 +127,8 @@ const Trip = [
     fare,
   },
   {
-    // Incoreect admin mail
-    email: 'admin1wayfarer.com',
+    // Incorrect admin mail
+    userid: 'aa',
     origin,
     destination,
     tripDate: '11/5/2003',
@@ -196,7 +201,42 @@ const adminSignin = [
     password: 'RyE74wmzS3xIf6Rjz4D',
   },
 ];
+const bookTrip = [
+  {
+    // Book a Trip
+    userid: 2,
+    tripid: 1,
+  },
+  {
+    // User is an admin
+    userid: 1,
+    tripid: 1,
+  },
+  {
+    // User id does not exist
+    userid: 1234567890,
+    tripid: 1,
+  },
+  {
+    // Trip id was not entered
+    userid: 2,
+  },
+  {
+    // User id was not entered
+    tripid: 1,
+  },
+  {
+    // Trip id is not a number
+    userid: 2,
+    tripid: 'abcdef',
+  },
+  {
+    // User id is not a number
+    userid: 'abcdef',
+    tripid: 1,
+  },
+];
 
 export default {
-  User, InvalidAccess, Trip, adminSignin,
+  User, InvalidAccess, Trip, adminSignin, bookTrip,
 };

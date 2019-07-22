@@ -10,16 +10,16 @@ class tripValidation {
      */
   static postTripValidation(req, res, next) {
     //   Email
-    if (!req.body.email) {
+    if (!req.body.userid) {
       return res.status(400).send({
         status: 400,
-        error: 'Email is required',
+        error: 'Id is required',
       });
     }
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email) === false) {
+    if (/[A-Za-z]/.test(req.body.userid)) {
       return res.status(400).send({
         status: 400,
-        error: 'Email address is incorrect',
+        error: 'Id must be a number',
       });
     }
     if (!req.body.origin) {

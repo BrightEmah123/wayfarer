@@ -39,7 +39,7 @@ describe('Trip Creation Test', () => {
           done(err);
         });
     });
-    it('Should return a 409 error if email does not exist', (done) => {
+    it('Should return a 409 error if userid does not exist', (done) => {
       chai.request(app)
         .post(`${tripURI}`)
         .send(dataFeed.Trip[1])
@@ -61,7 +61,7 @@ describe('Trip Creation Test', () => {
           done(err);
         });
     });
-    it('Should return a 400 status if the email was not entered', (done) => {
+    it('Should return a 400 status if the User Id was not entered', (done) => {
       chai.request(app)
         .post(`${tripURI}`)
         .send(dataFeed.Trip[3])
@@ -72,7 +72,7 @@ describe('Trip Creation Test', () => {
           done(err);
         });
     });
-    it('Should return a 400 status if the email is incorrect', (done) => {
+    it('Should return a 400 status if the User Id is incorrect', (done) => {
       chai.request(app)
         .post(`${tripURI}`)
         .send(dataFeed.Trip[4])

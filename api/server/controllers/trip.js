@@ -12,17 +12,17 @@ class tripController {
      */
   static async createTrip(req, res) {
     const {
-      email, origin, destination, tripDate, fare,
+      userid, origin, destination, tripDate, fare,
     } = req.body;
     try {
       const checkStatus = await users.findByAdminStatus();
-      const list = await users.findByEmail(email);
+      const list = await users.findById(userid);
       const listResult = list.rows[0];
       const result = checkStatus.rows[0];
       if (!listResult) {
         return res.status(409).json({
           status: 409,
-          error: 'Email does not exist',
+          error: 'Id does not exist',
         });
       }
       if (result.isadmin === listResult.isadmin) {
@@ -64,10 +64,6 @@ class tripController {
       });
       return;
     }
-    res.status(404).json({
-      status: 404,
-      error: 'No trip or destination found',
-    })
     const records = await trips.findFromTrip();
     const data = records.rows;
     res.status(200).json({

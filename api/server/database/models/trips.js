@@ -19,8 +19,16 @@ export default {
     text: 'SELECT * FROM trips WHERE origin=$1 AND destination=$2',
     values: [origin, destination],
   }),
+  findByTripId: tripid => client.query({
+    text: 'SELECT * FROM trips WHERE tripid=$1 LIMIT 1',
+    values: [tripid],
+  }),
   findFromTrip: () => client.query({
     text: 'SELECT * FROM trips',
     values: [],
+  }),
+  findTripsUsersId: (tripid, userid) => client.query({
+    text: 'SELECT tr.tripid, u.userid, u.isadmin FROM trips tr, users u WHERE tripid = $1 AND userid = $2',
+    values: [tripid, userid],
   }),
 };

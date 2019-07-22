@@ -1,6 +1,6 @@
 /* eslint-disable linebreak-style */
 const users = ` CREATE TABLE IF NOT EXISTS users (
-  id SERIAL NOT NULL PRIMARY KEY,
+  userid SERIAL PRIMARY KEY,
   firstname VARCHAR(255) NOT NULL,
   lastname VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
@@ -9,17 +9,27 @@ const users = ` CREATE TABLE IF NOT EXISTS users (
 );`;
 
 const trips = `CREATE TABLE IF NOT EXISTS trips (
-  tripid SERIAL NOT NULL PRIMARY KEY,
-  busId SERIAL NOT NULL,
+  tripid SERIAL PRIMARY KEY,
+  busid SERIAL NOT NULL,
   origin VARCHAR(255) NOT NULL,
   destination VARCHAR(255) NOT NULL,
-  tripDate TIMESTAMP NOT NULL,
+  tripdate TIMESTAMP NOT NULL DEFAULT NOW(),
   fare DECIMAL(10,2) NOT NULL,
   status VARCHAR(50) DEFAULT 'active'
+);`;
+
+const bookings = `CREATE TABLE IF NOT EXISTS bookings (
+  bookingid SERIAL PRIMARY KEY,
+  userid INTEGER NOT NULL,
+  tripid INTEGER NOT NULL,
+  createdon TIMESTAMP NOT NULL DEFAULT NOW(),
+  seatnumber INTEGER NOT NULL,
+  FOREIGN KEY (tripid) REFERENCES trips(tripid) ON DELETE CASCADE,
+  FOREIGN KEY (userid) REFERENCES users(userid) ON DELETE CASCADE
 )`;
 
 const createTables = `
-  ${users}${trips}
+  ${users}${trips}${bookings}
 `;
 
 export default createTables;
