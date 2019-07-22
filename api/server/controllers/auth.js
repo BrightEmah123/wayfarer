@@ -13,13 +13,13 @@ class authController {
      */
   static async signup(req, res) {
     const {
-      firstname, lastname, email, password, isadmin,
+      firstname, lastname, email, password,
     } = req.body;
     try {
       const { rows } = await users.createEntity(req.body);
       const data = rows[0];
       delete data.password;
-      const token = Authenticate.generateToken({ id: data.id, email: data.email });
+      const token = Authenticate.generateToken({ userid: data.userid, email: data.email });
       res.status(201).json({
         status: 200,
         data: {
