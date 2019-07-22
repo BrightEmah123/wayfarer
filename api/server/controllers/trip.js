@@ -8,7 +8,7 @@ class tripController {
      * @description creates a trip
      * @param {object} req request object
      * @param {object} res response object
-     * @returns {object} JON response
+     * @returns {object} JSON response
      */
   static async createTrip(req, res) {
     const {
@@ -46,6 +46,34 @@ class tripController {
       });
     }
   }
-}
 
+  /**
+   * @description get all trips
+   * @param {*} req
+   * @param {*} res
+   * @returns {object} JSON response
+   */
+  static async getTrips(req, res) {
+    const { origin, destination } = req.query;
+    if (origin && destination) {
+      const record = await trips.findByorigin(req.query);
+      const data = record.rows[0];
+      res.status(200).json({
+        status: 200,
+        data,
+      });
+      return;
+    }
+    res.status(404).json({
+      status: 404,
+      error: 'No trip or destination found',
+    })
+    const records = await trips.findFromTrip();
+    const data = records.rows;
+    res.status(200).json({
+      status: 200,
+      data,
+    });
+  }
+}
 export default tripController;
