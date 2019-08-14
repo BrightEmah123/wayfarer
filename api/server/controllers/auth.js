@@ -19,9 +19,12 @@ class authController {
       const { rows } = await users.createEntity(req.body);
       const data = rows[0];
       delete data.password;
-      const token = Authenticate.generateToken({ userid: data.userid, email: data.email });
+      const payload = {
+        userid: data.userid, email: data.email, isadmin: data.isadmin,
+      };
+      const token = Authenticate.generateToken(payload);
       res.status(201).json({
-        status: 200,
+        status: 201,
         data: {
           ...data,
           token,
@@ -51,6 +54,7 @@ class authController {
      */
   static async signin(req, res) {
     const { email } = req.body;
+    // const getToken = req.headers.token;
     const findUser = await users.findByEmail(email);
     const result = findUser.rows[0];
     if (!result) {
@@ -60,11 +64,15 @@ class authController {
       });
     }
     const password = Authenticate.comparePassword(req.body.password, result.password);
-    const token = Authenticate.generateToken({ id: result.id, email: result.email });
     if (password) {
+      const payload = {
+        userid: result.userid, email: result.email, isadmin: result.isadmin,
+      };
+      const token = Authenticate.generateToken(payload);
       delete result.password;
       return res.status(200).json({
         status: 200,
+        // getToken,
         data: {
           ...result,
           token,

@@ -73,6 +73,16 @@ const User = [
     email: 'jd@generic.com',
     password: 'AWERNfghb865v5zS3xIf6Rjz4D',
   },
+  {
+    // Seeded 2nd User Login
+    email: 'janed@generic.com',
+    password: 'AWERNfghb865v5zS3xIf6Rjz4D',
+  },
+  {
+    // Seeded 3rd User Login
+    email: 'jarc@generic.com',
+    password: 'AWERNfghb865v5zS3xIf6Rjz4D',
+  },
 ];
 const InvalidAccess = [
   {
@@ -97,98 +107,72 @@ const InvalidAccess = [
 const Trip = [
   {
     // Create Trip
-    userid: 1,
     origin,
     destination,
-    tripDate: '11/2/1997',
+    tripDate: '08/08/2027',
     fare,
   },
   {
-    // User not found
-    userid: 1234567890,
-    origin,
+    // Origin was not entered
     destination,
-    tripDate: '11/2/1997',
-    fare,
-  },
-  {
-    // User is not admin
-    userid: 2,
-    origin,
-    destination,
-    tripDate: '11/5/2003',
-    fare,
-  },
-  {
-    // No mail
-    origin,
-    destination,
-    tripDate: '11/5/2003',
-    fare,
-  },
-  {
-    // Incorrect admin mail
-    userid: 'aa',
-    origin,
-    destination,
-    tripDate: '11/5/2003',
-    fare,
-  },
-  {
-    // No origin
-    email: 'admin@wayfarer.com',
-    destination,
-    tripDate: '11/5/2003',
+    tripDate: '08/08/2027',
     fare,
   },
   {
     // Origin must be 2 to 50 characters
-    email: 'admin@wayfarer.com',
     origin: 'a',
     destination,
-    tripDate: '11/5/2003',
+    tripDate: '08/08/2027',
     fare,
   },
   {
     // No destination
-    email: 'admin@wayfarer.com',
     origin,
-    tripDate: '11/5/2003',
+    tripDate: '08/08/2027',
     fare,
   },
   {
     // Destination must be 2 to 50 characters
-    email: 'admin@wayfarer.com',
     origin,
     destination: 'b',
-    tripDate: '11/5/2003',
+    tripDate: '08/08/2027',
     fare,
   },
   {
     // No trip-Date
-    email: 'admin@wayfarer.com',
     origin,
     destination,
+    fare,
+  },
+  {
+    // Trip Year is not current or greater than current year
+    origin,
+    destination,
+    tripDate: '08/08/1997',
+    fare,
+  },
+  {
+    // Trip Month is not current or greater than current month
+    origin,
+    destination,
+    tripDate: '02/08/2019',
     fare,
   },
   {
     // Invalid Trip-Date format
-    email: 'admin@wayfarer.com',
     origin,
     destination,
-    tripDate: '11th August 2003',
+    tripDate: '11th August 2019',
     fare,
   },
   {
     // No fare
-    email: 'admin@wayfarer.com',
     origin,
     destination,
-    tripDate: '11/08/2003',
+    tripDate: '09/09/2019',
   },
   {
     // Fare must be a number
-    email: 'admin@wayfarer.com',
     origin,
     destination,
     tripDate: '11/08/2003',
@@ -204,36 +188,22 @@ const adminSignin = [
 const bookTrip = [
   {
     // Book a Trip
-    userid: 2,
     tripid: 1,
   },
   {
-    // User is an admin
-    userid: 1,
-    tripid: 1,
+    // Cancelled Trip
+    tripid: 2,
   },
   {
-    // User id does not exist
-    userid: 1234567890,
-    tripid: 1,
+    // Trip id does not exist
+    tripid: 9999,
   },
   {
-    // Trip id was not entered
-    userid: 2,
+    // user id was not entered
   },
   {
-    // User id was not entered
-    tripid: 1,
-  },
-  {
-    // Trip id is not a number
-    userid: 2,
-    tripid: 'abcdef',
-  },
-  {
-    // User id is not a number
-    userid: 'abcdef',
-    tripid: 1,
+    // trip id is not a number
+    tripid: 'aa',
   },
 ];
 

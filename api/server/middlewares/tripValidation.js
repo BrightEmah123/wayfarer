@@ -9,19 +9,36 @@ class tripValidation {
      * @param {*} next
      */
   static postTripValidation(req, res, next) {
+    // Month => mnth
+    const mnth = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    // Date-Check
+    const checkYear = () => {
+      const year = {
+        year: 'numeric',
+      };
+      const currentYear = new Date().toLocaleString('en-us', year);
+      return Number(currentYear);
+    };
+    const checkMonth = () => {
+      const month = {
+        month: 'numeric',
+      };
+      const currentMonth = new Date().toLocaleString('en-us', month);
+      return Number(currentMonth);
+    };
+    const slicedYear = () => {
+      if (req.body.tripDate.length === 10) {
+        const sizeTen = req.body.tripDate.slice(6);
+        return Number(sizeTen);
+      }
+    };
+    const slicedMonth = () => {
+      if (req.body.tripDate.length === 10) {
+        const sizeTen = req.body.tripDate.slice(0, 2);
+        return Number(sizeTen);
+      }
+    };
     //   Email
-    if (!req.body.userid) {
-      return res.status(400).send({
-        status: 400,
-        error: 'Id is required',
-      });
-    }
-    if (/[A-Za-z]/.test(req.body.userid)) {
-      return res.status(400).send({
-        status: 400,
-        error: 'Id must be a number',
-      });
-    }
     if (!req.body.origin) {
       return res.status(400).send({
         status: 400,
@@ -52,10 +69,22 @@ class tripValidation {
         error: 'Trip-Date is required',
       });
     }
-    if (/^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$/.test(req.body.tripDate) === false) {
+    if (checkYear() > slicedYear()) {
       return res.status(400).send({
         status: 400,
-        error: 'Trip-Date must either be in the dd/mm/yy or dd.mm.yy or dd-mm-yy format',
+        error: `The Year for the trip must be year ${checkYear()} and above`,
+      });
+    }
+    if (checkMonth() > slicedMonth()) {
+      return res.status(400).send({
+        status: 400,
+        error: `The Month for the trip must be ${mnth[checkMonth() - 1]} or above`,
+      });
+    }
+    if (/^([0][1-9]|[1][0-2])[./-]([0][1-9]|[1|2][0-9]|[3][0|1])[./-]([0-9]{4}|[0-9]{2})$/.test(req.body.tripDate) === false) {
+      return res.status(400).send({
+        status: 400,
+        error: 'Trip-Date must either be in the mm/dd/yyyy or mm.dd.yyyy or mm-dd-yyyy format',
       });
     }
     if (!req.body.fare) {

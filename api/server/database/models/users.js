@@ -23,7 +23,7 @@ export default {
     values: [userid],
   }),
   findByEmail: email => client.query({
-    text: 'SELECT * FROM users WHERE email = $1 LIMIT 1',
+    text: 'SELECT * FROM users WHERE email = $1',
     values: [email],
   }),
 };
