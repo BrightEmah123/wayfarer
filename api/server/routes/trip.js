@@ -8,6 +8,7 @@ const tripRoute = Router();
 
 tripRoute.post('/', Authorization.verifyAdmin, tripValidation.postTripValidation, tripController.createTrip);
 tripRoute.get('/', Authorization.verifyUser, tripController.getTrips);
+tripRoute.patch('/:tripid', Authorization.verifyAdmin, tripValidation.patchTripValidation, tripController.cancelTrips);
 
 
 export default tripRoute;

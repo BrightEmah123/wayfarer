@@ -101,5 +101,27 @@ class tripValidation {
     }
     next();
   }
+
+  /**
+   * @description validates cancel trip
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   */
+  static patchTripValidation(req, res, next) {
+    if (/[A-Za-z]/.test(req.params.tripid)) {
+      return res.status(400).send({
+        status: 400,
+        error: 'Trip Id must be a number',
+      });
+    }
+    if (/\`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\-|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:|\s/.test(req.params.tripid)) {
+      return res.status(400).send({
+        status: 400,
+        error: 'Trip Id should not contain special characters or negative values',
+      });
+    }
+    next();
+  }
 }
 export default tripValidation;

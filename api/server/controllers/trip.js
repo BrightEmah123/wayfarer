@@ -95,5 +95,56 @@ class tripController {
       });
     }
   }
+
+  /**
+   * @description Cancel all trips
+   * @param {*} req
+   * @param {*} res
+   * @returns {object} JSON response
+   */
+  static async cancelTrips(req, res) {
+    const adminStatus = req.user;
+    const { tripid } = req.params;
+    const id = Number(tripid);
+    const status = 'cancelled';
+    try {
+      const findTrips = await trips.findByTripId(id);
+      const getAllTrips = findTrips.rows[0];
+      if (!getAllTrips) {
+        res.status(404).json({
+          status: 404,
+          error: 'Tripid does not exist',
+        });
+        return;
+      }
+      const checkTrips = await trips.findCancelledTrips(status, id);
+      const data = checkTrips.rows;
+      if (data[0]) {
+        res.status(401).json({
+          status: 401,
+          error: 'This Trip has been cancelled already',
+        });
+        return;
+      }
+      if (adminStatus) {
+        await trips.cancelATrip(status, id);
+        res.status(200).json({
+          status: 200,
+          message: 'Trip cancelled successfully',
+        });
+        return;
+      }
+      res.status(401).json({
+        status: 401,
+        error: 'Unauthorized to cancel trips',
+      });
+      return;
+    } catch (error) {
+      res.status(500).json({
+        status: 500,
+        error: error.message,
+      });
+    }
+  }
 }
 export default tripController;
