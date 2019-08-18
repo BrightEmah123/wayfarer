@@ -31,4 +31,12 @@ export default {
     text: 'SELECT * FROM trips',
     values: [],
   }),
+  cancelATrip: (status, tripid) => client.query({
+    text: 'UPDATE trips SET status = $1 WHERE tripid = $2;',
+    values: [status, tripid],
+  }),
+  findCancelledTrips: (status, tripid) => client.query({
+    text: 'SELECT * FROM trips WHERE status = $1 AND tripid = $2',
+    values: [status, tripid],
+  }),
 };

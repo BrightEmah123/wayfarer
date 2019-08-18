@@ -230,3 +230,73 @@ describe('TRIP RETRIEVAL TEST', () => {
     });
   });
 });
+
+describe('TRIP CANCELLLATION TEST', () => {
+  describe('PATCH api/v1/trips/:tripid', () => {
+    it('Should successfully cancel a trip', (done) => {
+      chai.request(app)
+        .patch(`${tripURI}/4`)
+        .set('Authorization', `Bearer ${currentToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.have.property('status');
+          done(err);
+        });
+    });
+    it('Should return a 404 status code if tripid does not exist', (done) => {
+      chai.request(app)
+        .patch(`${tripURI}/9999`)
+        .set('Authorization', `Bearer ${currentToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body).to.have.property('status');
+          expect(res.body).to.have.property('error');
+          done(err);
+        });
+    });
+    it('Should return a 400 status code if tripid entered was not a number', (done) => {
+      chai.request(app)
+        .patch(`${tripURI}/aa`)
+        .set('Authorization', `Bearer ${currentToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body).to.have.property('status');
+          expect(res.body).to.have.property('error');
+          done(err);
+        });
+    });
+    it('Should return a 400 status code if tripid entered was not a special character', (done) => {
+      chai.request(app)
+        .patch(`${tripURI}/[]`)
+        .set('Authorization', `Bearer ${currentToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body).to.have.property('status');
+          expect(res.body).to.have.property('error');
+          done(err);
+        });
+    });
+    it('Should return a 400 status code if tripid entered was not a negative value', (done) => {
+      chai.request(app)
+        .patch(`${tripURI}/-3`)
+        .set('Authorization', `Bearer ${currentToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body).to.have.property('status');
+          expect(res.body).to.have.property('error');
+          done(err);
+        });
+    });
+    it('Should return a 401 status code if trip has been cancelled already', (done) => {
+      chai.request(app)
+        .patch(`${tripURI}/2`)
+        .set('Authorization', `Bearer ${currentToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body).to.have.property('status');
+          expect(res.body).to.have.property('error');
+          done(err);
+        });
+    });
+  });
+});
