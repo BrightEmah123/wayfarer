@@ -43,4 +43,12 @@ export default {
     text: 'SELECT * FROM bookings WHERE bookingid = $1',
     values: [bookingid],
   }),
+  sortBookings: (bookingid, userid) => client.query({
+    text: 'SELECT * FROM bookings WHERE bookingid = $1 AND userid = $2',
+    values: [bookingid, userid],
+  }),
+  deleteByBookingId: (bookingid, userid) => client.query({
+    text: 'DELETE FROM bookings WHERE bookingid = $1 AND userid = $2',
+    values: [bookingid, userid],
+  }),
 };

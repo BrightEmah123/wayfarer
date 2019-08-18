@@ -46,5 +46,27 @@ class bookValidation {
     }
     next();
   }
+
+  /**
+   * @description Validates deletion of booked trips
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   */
+  static delBookValidation(req, res, next) {
+    if (/[A-Za-z]/.test(req.params.bookingid)) {
+      return res.status(400).send({
+        status: 400,
+        error: 'Booking Id must be a number',
+      });
+    }
+    if (/\`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:|\s/.test(req.params.bookingid)) {
+      return res.status(400).send({
+        status: 400,
+        error: 'Booking Id should not contain special characters',
+      });
+    }
+    next();
+  }
 }
 export default bookValidation;
