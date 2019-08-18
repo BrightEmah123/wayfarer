@@ -13,7 +13,7 @@ const trips = `CREATE TABLE IF NOT EXISTS trips (
   busid SERIAL NOT NULL,
   origin VARCHAR(255) NOT NULL,
   destination VARCHAR(255) NOT NULL,
-  tripdate TIMESTAMP NOT NULL DEFAULT NOW(),
+  tripdate TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   fare DECIMAL(10,2) NOT NULL,
   status VARCHAR(50) DEFAULT 'active'
 );`;
@@ -22,11 +22,12 @@ const bookings = `CREATE TABLE IF NOT EXISTS bookings (
   bookingid SERIAL PRIMARY KEY,
   userid INTEGER NOT NULL,
   tripid INTEGER NOT NULL,
-  createdon TIMESTAMP NOT NULL DEFAULT NOW(),
+  createdon TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   seatnumber INTEGER NOT NULL,
-  FOREIGN KEY (tripid) REFERENCES trips(tripid) ON DELETE CASCADE,
-  FOREIGN KEY (userid) REFERENCES users(userid) ON DELETE CASCADE
-)`;
+  FOREIGN KEY (userid) REFERENCES users(userid) ON DELETE CASCADE,
+  FOREIGN KEY (tripid) REFERENCES trips(tripid) ON DELETE CASCADE
+);
+`;
 
 const createTables = `
   ${users}${trips}${bookings}

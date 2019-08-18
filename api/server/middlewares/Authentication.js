@@ -4,20 +4,21 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 
 dotenv.config();
+const secret = process.env.SECRET;
 
 class Authentication {
   /**
      * @description Generate access token
      */
   static generateToken(payload) {
-    return jwt.sign({ payload }, process.env.SECRET, { expiresIn: '5d' });
+    return jwt.sign(payload, secret, { expiresIn: '24h' });
   }
 
   /**
    * @description Verify access token
    */
   static verifyToken(token) {
-    return jwt.verify(token, process.env.SECRET);
+    return jwt.verify(token, secret);
   }
 
   /**

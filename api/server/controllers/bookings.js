@@ -2,8 +2,6 @@
 import '@babel/polyfill';
 import bookings from '../database/models/bookings';
 import trips from '../database/models/trips';
-import users from '../database/models/users';
-import Authenticate from '../middlewares/Authentication';
 
 class bookController {
   /**
@@ -12,33 +10,75 @@ class bookController {
      * @param {*} res
      */
   static async bookTrip(req, res) {
-    const { tripid, userid } = req.body;
+    const { userid } = req.user;
+    const { tripid } = req.body;
     try {
-      const findId = await trips.findTripsUsersId(tripid, userid);
+      const findId = await trips.findByTripId(tripid);
       const result = findId.rows[0];
       if (!result) {
-        return res.status(409).json({
+        res.status(409).json({
           status: 409,
-          error: 'Id not found',
+          error: 'Trip does not exist',
         });
+        return;
       }
-      const status = await users.findByAdminStatus();
-      const checkStatus = status.rows[0];
-      if (checkStatus.isadmin && result.isadmin === true) {
-        return res.status(401).json({
-          status: 401,
-          error: 'Unauthorized to book trips',
+      const cancelledTrip = result.status;
+      if (cancelledTrip === 'cancelled') {
+        res.status(400).json({
+          status: 400,
+          error: 'This Trip has been cancelled',
         });
+        return;
       }
-      await bookings.bookTrip(req.body);
+      await bookings.bookATrip(userid, tripid);
       const bookData = await bookings.findBookings(userid, tripid);
       const data = bookData.rows[0];
-      return res.status(201).json({
+      res.status(201).json({
         status: 201,
         data,
       });
+      return;
     } catch (error) {
-      return res.status(500).json({
+      res.status(500).json({
+        status: 500,
+        error: error.message,
+      });
+    }
+  }
+
+  /**
+   * @description User/Admin can get bookings
+   * @param {*} req
+   * @param {*} res
+   */
+  static async getBookings(req, res) {
+    const { isadmin, userid } = req.user;
+    try {
+      if (isadmin) {
+        const adminRecords = await bookings.findAllBookingsAdmin();
+        const data = adminRecords.rows;
+        res.status(200).json({
+          status: 200,
+          data,
+        });
+        return;
+      }
+      const userRecords = await bookings.findAllBookings(userid);
+      const userData = userRecords.rows;
+      if (!userData[0]) {
+        res.status(404).json({
+          status: 404,
+          error: 'No bookings made by this user',
+        });
+        return;
+      }
+      res.status(200).json({
+        status: 200,
+        data: userData,
+      });
+      return;
+    } catch (error) {
+      res.status(500).json({
         status: 500,
         error: error.message,
       });

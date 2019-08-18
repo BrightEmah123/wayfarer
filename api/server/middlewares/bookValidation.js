@@ -1,8 +1,9 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable no-useless-escape */
 /* eslint-disable consistent-return */
 class bookValidation {
   /**
-     * Validates a post request for booking
+     * @description Validates a post request for booking
      * @param {*} req
      * @param {*} res
      * @param {*} next
@@ -21,17 +22,26 @@ class bookValidation {
         error: 'TridId must be a number',
       });
     }
-    // userid
-    if (!req.body.userid) {
+    next();
+  }
+
+  /**
+   * @description Validates get request for bookings
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   */
+  static getBookValidation(req, res, next) {
+    if (!req.query.userid) {
       return res.status(400).send({
         status: 400,
-        error: 'Userid is required',
+        error: 'User id is required',
       });
     }
-    if (/[A-Za-z]/.test(req.body.userid)) {
+    if (/[A-Za-z]/.test(req.query.userid)) {
       return res.status(400).send({
         status: 400,
-        error: 'UserId must be a number',
+        error: 'User id must be a number',
       });
     }
     next();
