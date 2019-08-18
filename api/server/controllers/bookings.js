@@ -84,5 +84,46 @@ class bookController {
       });
     }
   }
+
+  /**
+   * @description Delete a booking
+   * @param {*} req
+   * @param {*} res
+   */
+  static async delBookings(req, res) {
+    const { userid } = req.user;
+    const { bookingid } = req.params;
+    const id = Number(bookingid);
+    try {
+      const findbooks = await bookings.getBookings(id);
+      const bookData = findbooks.rows[0];
+      if (!bookData) {
+        res.status(404).json({
+          status: 404,
+          error: 'Booking Id does not exist',
+        });
+        return;
+      }
+      const getBookings = await bookings.sortBookings(id, userid);
+      const data = getBookings.rows;
+      if (data[0]) {
+        await bookings.deleteByBookingId(id, userid);
+        res.status(200).json({
+          status: 200,
+          message: 'Bookings deleted successfully',
+        });
+        return;
+      }
+      res.status(401).json({
+        status: 401,
+        error: 'User Id does not match booking id',
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: 500,
+        error: error.message,
+      });
+    }
+  }
 }
 export default bookController;

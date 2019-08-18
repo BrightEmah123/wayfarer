@@ -8,5 +8,6 @@ const bookRoute = Router();
 
 bookRoute.post('/', Authorization.verifyUser, bookValidation.postBookValidation, bookController.bookTrip);
 bookRoute.get('/', Authorization.verifyUser, bookController.getBookings);
+bookRoute.delete('/:bookingid', Authorization.verifyUser, bookValidation.delBookValidation, bookController.delBookings);
 
 export default bookRoute;

@@ -157,3 +157,75 @@ describe('GET BOOKINGS TEST', () => {
     });
   });
 });
+
+describe('DELETE BOOKINGS TEST', () => {
+  describe('DEL /api/v1/bookings/:bookingid', () => {
+    it('Should successfully delete bookings made by the user', (done) => {
+      chai.request(app)
+        .delete(`${bookURI}/1`)
+        .set('Authorization', `Bearer ${currentToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.property('status');
+          expect(res.body).to.have.property('message');
+          done(err);
+        });
+    });
+    it('Should return a 404 status code if booking id does not exist', (done) => {
+      chai.request(app)
+        .delete(`${bookURI}/9999`)
+        .set('Authorization', `Bearer ${currentToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.property('status');
+          expect(res.body).to.have.property('error');
+          done(err);
+        });
+    });
+    before((done) => {
+      chai.request(app)
+        .post(`${loginURI}/signin`)
+        .send(dataFeed.User[12])
+        .end((loginErr, loginRes) => {
+          SecondUserToken = loginRes.body.data.token;
+          done(loginErr);
+        });
+    });
+    it('User-Test-Case 1: Should successfully book a seat and return a 201 status code', (done) => {
+      chai.request(app)
+        .post(`${bookURI}`)
+        .send(dataFeed.bookTrip[0])
+        .set('Authorization', `Bearer ${SecondUserToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(201);
+          expect(res.body).to.have.property('status');
+          done(err);
+        });
+    });
+    it('User-Test-Case 2: Should successfully book a seat and return a 201 status code', (done) => {
+      chai.request(app)
+        .post(`${bookURI}`)
+        .send(dataFeed.bookTrip[0])
+        .set('Authorization', `Bearer ${currentToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(201);
+          expect(res.body).to.have.property('status');
+          done(err);
+        });
+    });
+    it('Should return a 401 status code if the user did not create the booking', (done) => {
+      chai.request(app)
+        .delete(`${bookURI}/3`)
+        .set('Authorization', `Bearer ${SecondUserToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.property('status');
+          expect(res.body).to.have.property('error');
+          done(err);
+        });
+    });
+  });
+});
