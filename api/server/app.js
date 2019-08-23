@@ -1,6 +1,7 @@
 /* eslint-disable linebreak-style */
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import debug from 'debug';
 import morgan from 'morgan';
 import router from './routes';
@@ -9,6 +10,7 @@ const Debug = debug('http');
 
 const app = express();
 
+app.use(cors());
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
