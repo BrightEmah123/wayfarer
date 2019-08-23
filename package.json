@@ -1,6 +1,9 @@
 {
   "name": "wayfarer",
   "version": "1.0.0",
+  "engine": {
+    "node": "10.15.3"
+  },
   "description": "Wayfarer is a public bus transportation booking server",
   "main": "server/app.js",
   "scripts": {
