@@ -9,7 +9,7 @@
   "main": "api/server/app.js",
   "scripts": {
     "start:dev": "set DEBUG=http && nodemon --exec babel-node api/server/app.js",
-    "build": "babel server --out-dir build",
+    "build": "babel api/server --out-dir build",
     "dropTables": "set DEBUG=dev && babel-node api/server/database/seed/droptables",
     "create": "set DEBUG=dev && babel-node api/server/database/connection",
     "seed": "set DEBUG=dev && babel-node api/server/database/seed/insert",
