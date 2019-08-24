@@ -5,15 +5,16 @@
     "node": "10.15.3"
   },
   "description": "Wayfarer is a public bus transportation booking server",
-  "main": "server/app.js",
+  "main": "api/server/app.js",
   "scripts": {
-    "start:dev": "set DEBUG=http && nodemon --exec babel-node ./server/app.js",
-    "test": "nyc mocha --require @babel/register ./server/test/index.spec --exit",
+    "start:dev": "set DEBUG=http && nodemon --exec babel-node api/server/app.js",
     "build": "babel server --out-dir build",
-    "dropTables": "set DEBUG=dev && babel-node server/database/seed/droptables",
-    "create": "set DEBUG=dev && babel-node server/database/connection",
-    "seed": "set DEBUG=dev && babel-node server/database/seed/insert",
-    "start": "npm run create && npm run seed && npm run start:dev"
+    "dropTables": "set DEBUG=dev && babel-node api/server/database/seed/droptables",
+    "create": "set DEBUG=dev && babel-node api/server/database/connection",
+    "seed": "set DEBUG=dev && babel-node api/server/database/seed/insert",
+    "start": "npm run create && npm run seed && npm run start:dev",
+    "beforeTest": "npm run dropTables && npm run create && npm run seed",
+    "test": "npm run beforeTest && nyc mocha --require @babel/register api/server/test/index.spec --exit"
   },
   "repository": {
     "type": "git",
